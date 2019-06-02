@@ -1,0 +1,8 @@
+*.zip
+*.sqlite3
+*.pyc
+.vscode
+.env
+
+venv
+**__pycache__**
