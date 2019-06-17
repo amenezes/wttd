@@ -23,3 +23,7 @@ python manage.py test
 
 ## Como fazer o deploy?
 
+1. crie uma conta no heroku.
+2. click no botão abaixo:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
