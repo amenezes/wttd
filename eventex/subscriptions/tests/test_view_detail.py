@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.shortcuts import resolve_url as r
 
 from eventex.subscriptions.models import Subscription
+from eventex.subscriptions.views import encode_subscription_id, decode_subscription_id
 
 
 class SubscriptionDetailGet(TestCase):
@@ -12,7 +13,8 @@ class SubscriptionDetailGet(TestCase):
             email='alexandre.fmenezes@gmail.com',
             phone='61-9999999'
         )
-        self.resp = self.client.get(r('subscriptions:detail', self.obj.pk))
+        encode_id = encode_subscription_id(self.obj.pk)
+        self.resp = self.client.get(r('subscriptions:detail', encode_id))
 
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
@@ -42,7 +44,9 @@ class SubscriptionDetailGet(TestCase):
 class SubscriptionDetailNotFound(TestCase):
 
     def setUp(self):
-        self.response = self.client.get(r('subscriptions:detail', 0))
+        encode_id = encode_subscription_id(0)
+        self.response = self.client.get(r('subscriptions:detail', encode_id))
 
     def test_not_found(self):
         self.assertEqual(404, self.response.status_code)
+

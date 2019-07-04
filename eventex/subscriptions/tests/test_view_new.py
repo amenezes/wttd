@@ -4,6 +4,8 @@ from django.shortcuts import resolve_url as r
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 
+from eventex.subscriptions.views import encode_subscription_id
+
 
 class SubscriptionNewGet(TestCase):
 
@@ -47,7 +49,8 @@ class SubscriptionNewPostValid(TestCase):
         self.email = mail.outbox[0]
 
     def test_post(self):
-        self.assertRedirects(self.response, r('subscriptions:detail', 1))
+        encode_id = encode_subscription_id(1)
+        self.assertRedirects(self.response, r('subscriptions:detail', encode_id))
 
     def test_send_subscribe_email(self):
         self.assertEqual(1, len(mail.outbox))
@@ -77,3 +80,4 @@ class SubscriptionNewPostInvalid(TestCase):
 
     def test_dont_save_subscription(self):
         self.assertFalse(Subscription.objects.exists())
+

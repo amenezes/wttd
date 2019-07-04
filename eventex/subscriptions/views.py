@@ -8,6 +8,8 @@ from django.shortcuts import resolve_url as r
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 
+from itsdangerous import URLSafeSerializer
+
 
 def new(request):
     if request.method == 'POST':
@@ -39,13 +41,25 @@ def create(request):
         subscription.email,
         'subscriptions/subscription_email.txt',
         {'subscription': subscription})    
+    subscription_id = encode_subscription_id(subscription.pk)
 
-    return HttpResponseRedirect(r('subscriptions:detail', subscription.pk))
+    return HttpResponseRedirect(r('subscriptions:detail', subscription_id))
+
+
+def encode_subscription_id(identifier):
+    property_serializer = URLSafeSerializer(settings.SECRET_KEY)
+    return property_serializer.dumps(identifier)
+
+
+def decode_subscription_id(identifier):
+    property_serializer = URLSafeSerializer(settings.SECRET_KEY)
+    return property_serializer.loads(identifier)
 
 
 def detail(request, pk):
     try:
-        subscription = Subscription.objects.get(pk=pk)
+        subscription_id = decode_subscription_id(pk)
+        subscription = Subscription.objects.get(pk=subscription_id)
     except Subscription.DoesNotExist:
         raise Http404
 
