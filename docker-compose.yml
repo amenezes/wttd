@@ -1,10 +1,25 @@
 version: '3'
 services:
+  traefik:
+    image: traefik:alpine
+    command:
+      - --accesslog
+      - --api
+      - --api.dashboard
+      - --api.statistics
+      - --api.statistics.recenterrors=10
+      - --docker
+      - --docker.watch=true
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
   wttd:
-    container_name: wttd
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - 8000:8000
-
+    labels:
+      - traefik.backend=wttd
+      - traefik.port=8000
+      - traefik.frontend.rule=PathPrefix:/
