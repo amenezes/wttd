@@ -1,0 +1,9 @@
+**
+!contrib
+!eventex
+!requirements.txt
+!*.py
+!app.json
+!*.sqlite3
+!.env
+!docker-entrypoint.sh

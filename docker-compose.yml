@@ -1,0 +1,10 @@
+version: '3'
+services:
+  wttd:
+    container_name: wttd
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+
