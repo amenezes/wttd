@@ -42,9 +42,12 @@ class SubscriptionNewGet(TestCase):
 class SubscriptionNewPostValid(TestCase):
 
     def setUp(self):
-        self.data = dict(name='Alexandre Menezes', cpf='123456789', 
-                         email='alexandre.fmenezes@gmail.com', 
-                         phone='61-99999-9999')
+        self.data = dict(
+            name='Alexandre Menezes',
+            cpf='12345678902',
+            email='alexandre.fmenezes@gmail.com',
+            phone='61-99999-9999'
+        )
         self.response = self.client.post(r('subscriptions:new'), self.data)
         self.email = mail.outbox[0]
 
