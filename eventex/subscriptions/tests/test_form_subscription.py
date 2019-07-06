@@ -39,3 +39,7 @@ class SubscriptionFormTest(TestCase):
         errors = form.errors
         errors_list = errors[field]
         self.assertListEqual([msg], errors_list)
+
+    def test_name_must_be_capitalize(self):
+        form = self.make_validate_form(name="ALEX mendes")
+        self.assertEqual("Alex Mendes", form.cleaned_data['name'])
