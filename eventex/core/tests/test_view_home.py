@@ -2,15 +2,16 @@ from django.test import TestCase
 from django.shortcuts import resolve_url as r
 
 
-class EventexCoreTest(TestCase):
+class HomeTest(TestCase):
+    fixtures = ['keynotes.json']
 
     def setUp(self):
         self.response = self.client.get(r('home'))
 
-    def test_home(self):
+    def test_get(self):
         self.assertEqual(200, self.response.status_code)
 
-    def test_eventex_template(self):
+    def test_template(self):
         self.assertTemplateUsed(self.response, 'index.html')
 
     def test_subscription_link(self):
@@ -19,8 +20,10 @@ class EventexCoreTest(TestCase):
 
     def test_speakers(self):
         contents = [
+            'href="{}"'.format(r('speaker_detail', slug='grace-hopper')),
             'Grace Hopper',
             'http://hbn.link/hopper-pic',
+            'href="{}"'.format(r('speaker_detail', slug='alan-turing')),
             'Alan Turing',
             'http://hbn.link/turing-pic'
         ]
