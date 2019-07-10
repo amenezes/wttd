@@ -15,6 +15,13 @@
     {% empty %}
     <p>As palestras deste período ainda não foram definidas.</p>
     {% endfor %}
+
+    {% comment %} curso {% endcomment %}
+    <h2>Mini-cursos</h2>
+    {% for course in courses %}
+    {% include 'core/talk_list_snippet.html' with talk=course only %}
+    {% endfor %}
+
 </div>
 </section>
 {% endblock content %}
